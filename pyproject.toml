@@ -1,0 +1,13 @@
+[project]
+name = "gym-sandbox"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "gymnasium[box2d]>=1.2.3",
+    "pygame>=2.6.1",
+    "stable-baselines3>=2.8.0",
+    "swig>=4.4.1",
+    "torch>=2.11.0",
+]
