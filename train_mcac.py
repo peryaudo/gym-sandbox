@@ -19,6 +19,8 @@ for episode in range(cfg.n_episodes):
     obs, _ = env.reset()
     log_probs, values, rewards = [], [], []
 
+    total_reward = 0.0
+
     while True:
         obs_t = torch.tensor(obs, dtype=torch.float32, device=device)
 
@@ -32,6 +34,7 @@ for episode in range(cfg.n_episodes):
 
         obs, reward, terminated, truncated, _ = env.step(action.item())
         rewards.append(reward)
+        total_reward += reward
         if terminated or truncated:
             break
 
@@ -60,8 +63,8 @@ for episode in range(cfg.n_episodes):
     critic_opt.zero_grad(); critic_loss.backward(); critic_opt.step()
 
     if (episode + 1) % 50 == 0:
-        print(f"episode {episode+1:4d}  steps {len(rewards):3d}  "
-              f"actor {actor_loss.item():.2f}  critic {critic_loss.item():.2f}")
+        print(f"episode {episode+1:4d}  avg_steps {len(rewards):3d} avg_rewards {total_reward}  "
+              f"actor_loss {actor_loss.item():.2f}  critic_loss {critic_loss.item():.2f}")
 
 torch.save(actor.state_dict(), "policy.pth")
 print("saved policy.pth")
